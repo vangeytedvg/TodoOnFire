@@ -4,7 +4,6 @@
   June 18, 2019
 */
 class TodoItem {
-
   int _docId;
   String _title;
   String _details;
@@ -14,10 +13,12 @@ class TodoItem {
   int _creatorId;
   int _priorityLevel;
 
-  TodoItem(this._title, this._details, this._createdDate, this._closedDate, this._ownerId, this._creatorId, this._priorityLevel);
+  TodoItem(this._title, this._details, this._createdDate, this._closedDate,
+      this._ownerId, this._creatorId, this._priorityLevel);
+  TodoItem.withId(this._docId, this._title, this._details, this._createdDate,
+      this._closedDate, this._ownerId, this._creatorId, this._priorityLevel);
 
-
-  int get docId => _docId;
+  int get docId => this._docId;
   set docId(int docId) {
     _docId = docId;
   }
@@ -36,7 +37,7 @@ class TodoItem {
   set createdDate(String createdDate) {
     _createdDate = createdDate;
   }
-  
+
   String get closedDate => _closedDate;
   set closedDate(String closedDate) {
     _closedDate = closedDate;
@@ -56,6 +57,4 @@ class TodoItem {
   set priorityLevel(int priorityLevel) {
     _priorityLevel = priorityLevel;
   }
-
-  
-} 
+}
