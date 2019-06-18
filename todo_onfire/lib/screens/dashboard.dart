@@ -12,6 +12,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/crud.dart';
+import '../models/todo.dart';
 
 enum ConfirmAction { DELETE, CANCEL }
 enum TodoState { DONE, NOTDONE }
@@ -24,6 +25,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   String carModel;
   String carColor;
+  TodoItem todoItem;
+
   QuerySnapshot cars;
   CrudMethods crudObj = new CrudMethods();
 
@@ -259,7 +262,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextField(
-                    decoration: InputDecoration(hintText: 'Enter car Name'),
+                    decoration: InputDecoration(hintText: 'Enter ToDo Title'),
                     onChanged: (value) {
                       this.carModel = value;
                     },
