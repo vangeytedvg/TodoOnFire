@@ -4,7 +4,7 @@
   June 18, 2019
 */
 class TodoItem {
-  int _docId;
+  String _docId;
   String _title;
   String _details;
   String _createdDate;
@@ -39,9 +39,25 @@ class TodoItem {
     return map;
   }
 
-  int get docId => this._docId;
-  set docId(int docId) {
-    _docId = docId;
+  // Named constructor convert a map to a normal todi item
+  TodoItem.fromMap(Map<String, dynamic> map) {
+    this._docId = map['docId'];
+    this._title = map['title'];
+    this._details = map['details'];
+    this._createdDate = map['createdDate'];
+    this._closedDate = map['closedDate'];
+    this._ownerId = map['ownerId'];
+    this._creatorId = map['creatorId'];
+    this._priorityLevel = map['priorityLevel'];
+  }
+
+  /* Getter and setter section */
+  
+  String get docId => this._docId;
+  set docId(String docId) {
+    if (docId != null) {
+      _docId = docId;
+    }
   }
 
   String get title => _title;

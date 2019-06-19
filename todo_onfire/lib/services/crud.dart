@@ -52,7 +52,7 @@ class CrudMethods {
   }
 
   // Update the data
-  updateData(selectedDoc, newValues) async {
+  updateData(selectedDoc, newValues, thetodo) async {
     // I suppose we don't need to be async here, we are not waiting
     // for updates here, so...
     Firestore.instance
