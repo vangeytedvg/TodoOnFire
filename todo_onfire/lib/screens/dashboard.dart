@@ -176,7 +176,11 @@ class _DashboardPageState extends State<DashboardPage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Add Data', style: TextStyle(fontSize: 15.0)),
+            title: Text('New todo',
+                style: TextStyle(
+                  color: Colors.orange, 
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold)),
             content: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -192,7 +196,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15.0))),
                         validator: (val) =>
-                            !val.contains('@') ? 'Invalid email' : null,
+                            val.length < 1 ? "Need a title!" : null,
+                        //!val.contains('@') ? 'Invalid email' : null,
                         onSaved: (val) {
                           this.carModel = val;
                           todoItem.title = val;
@@ -200,7 +205,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: TextFormField(
                         decoration: InputDecoration(
                             labelText: "Task details",
@@ -210,8 +215,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         validator: (val) =>
                             val.length < 2 ? "Not a serious detail!" : null,
                         onSaved: (val) {
-                          this.carModel = val;
-                          todoItem.title = val;
+                          this.carColor = val;
+                          todoItem.details = val;
                         },
                       ),
                     ),
@@ -242,27 +247,21 @@ class _DashboardPageState extends State<DashboardPage> {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
+      Navigator.of(context).pop();
+      // Prepare a new Todo Item
+      crudObj.addData({
+        'carName': this.carModel,
+        'color': this.carColor,
+        'status': false
+      }).then((result) {
+        final snackbar = new SnackBar(
+          content: new Text("Record added"),
+        );
+        scaffoldKey.currentState.showSnackBar(snackbar);
+      }).catchError((e) {
+        print(e);
+      });
     }
-    /*
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Add'),
-                textColor: Colors.blue,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  // Prepare a new Todo Item
-                  crudObj.addData({
-                    'carName': this.carModel,
-                    'color': this.carColor,
-                    'status': false
-                  }).then((result) {
-                    dialogTrigger(context);
-                  }).catchError((e) {
-                    print(e);
-                  });
-                },
-              )
-            ],*/
   }
 
   /*
