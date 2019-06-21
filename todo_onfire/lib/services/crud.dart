@@ -55,6 +55,7 @@ class CrudMethods {
   updateData(selectedDoc, newValues, thetodo) async {
     // I suppose we don't need to be async here, we are not waiting
     // for updates here, so...
+    print(thetodo['docId']);
     Firestore.instance
         .collection('testscrud')
         .document(selectedDoc)

@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/crud.dart';
 import '../models/todo.dart';
+import '../services/track.dart';
+import 'package:provider/provider.dart';
 
 enum ConfirmAction { DELETE, CANCEL }
 enum TodoState { DONE, NOTDONE }
@@ -25,6 +27,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+
   String carModel;
   String carColor;
   TodoItem todoItem;
@@ -46,15 +49,10 @@ class _DashboardPageState extends State<DashboardPage> {
     return new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Colors.orange[900],
-          title: Text('Dashboard'),
+          //backgroundColor: Colors.orange[900],
+          title: Text('Todo' 's On Fire!'),
+          centerTitle: true,
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                addDialog(context);
-              },
-            ),
             IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
@@ -67,12 +65,19 @@ class _DashboardPageState extends State<DashboardPage> {
             )
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.plus_one),
+          onPressed: () {
+            addDialog(context);
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: _carList());
   }
 
+  // The actual todo-list is drawn here
   Widget _carList() {
     // The cars snapshot is reetrieved in the Widget Build method above
-
     return new Container(
       child: StreamBuilder(
         // This keeps track of changes in the DB itself.  Listeners....
@@ -100,18 +105,23 @@ class _DashboardPageState extends State<DashboardPage> {
                   done = snapshot.data.documents[i].data['status'];
                   return new Container(
                     child: Card(
-                      elevation: 5.0,
-                      color: Colors.orange[400],
+                      color: Color.fromRGBO(255, 255, 0, 10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      elevation: 4.0,
+                      //color: Colors.l[400],
                       child: ListTile(
                         title: Text(
                           snapshot.data.documents[i].data['carName'],
-                          style: TextStyle(color: Colors.black, fontSize: 18.0),
+                          style: TextStyle(color: Colors.green, fontSize: 18.0),
                         ),
-                        subtitle:
-                            Text(snapshot.data.documents[i].data['color']),
+                        subtitle: Text(
+                          snapshot.data.documents[i].data['color'],
+                          style: TextStyle(color: Colors.black87),
+                        ),
                         // Put an icon on it
                         leading: IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: Icon(Icons.edit, color: Colors.blue),
                           onPressed: () {},
                         ),
                         trailing: IconButton(
@@ -125,10 +135,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               Code added by DVG, in order to make it a todo app
                               we should keep track of the status of a todo-item.
                             */
-                            // Boolean trick, if user clicks on an open todo, the
-                            // state true becomes false and vice versa
                             done = !done;
-
                             crudObj.updateStatus(
                                 snapshot.data.documents[i].documentID,
                                 {'status': done});
@@ -156,10 +163,6 @@ class _DashboardPageState extends State<DashboardPage> {
                 },
               );
           }
-          /* else {
-              return 
-                CircularProgressIndicator();
-            }*/
         },
       ),
     );
@@ -178,9 +181,9 @@ class _DashboardPageState extends State<DashboardPage> {
           return AlertDialog(
             title: Text('New todo',
                 style: TextStyle(
-                  color: Colors.orange, 
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold)),
+                    color: Colors.orange,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold)),
             content: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -223,11 +226,15 @@ class _DashboardPageState extends State<DashboardPage> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: RaisedButton(
-                              child: Text("Submit"), onPressed: _saveRecord),
+                          child: FlatButton(
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(color: Colors.green),
+                              ),
+                              onPressed: _saveRecord),
                         ),
                         Expanded(
-                            child: RaisedButton(
+                            child: FlatButton(
                           child: Text("Cancel"),
                           /* When cancel is clicked, yust navigate away */
                           onPressed: () => Navigator.of(context).pop(),
