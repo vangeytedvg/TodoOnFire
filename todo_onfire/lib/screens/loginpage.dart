@@ -4,6 +4,8 @@ import 'package:todo_onfire/services/track.dart';
 import 'package:provider/provider.dart';
 import '../services/track.dart';
 import '../services/crud.dart';
+import '../components/imagewidgets.dart';
+import '../components/buttons.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -44,6 +46,8 @@ class _LoginPageState extends State<LoginPage> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(padding: const EdgeInsets.all(18.0),
+            child: AnimatedLoginImage(),),
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: TextFormField(
@@ -74,11 +78,18 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
             ),
-            RaisedButton(
+            // Custon button (see buttons.dart)
+            RoundedRaisedButton(
+              onPushButton: () {
+                _loginUser();
+              },
+            )
+            /*RaisedButton(
                 textColor: Colors.white,
                 child: Text('Login'),
                 color: Colors.blue,
-                onPressed: _loginUser)
+                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                onPressed: _loginUser)*/
           ],
         ),
       ),

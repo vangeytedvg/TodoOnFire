@@ -122,7 +122,12 @@ class _DashboardPageState extends State<DashboardPage> {
                         // Put an icon on it
                         leading: IconButton(
                           icon: Icon(Icons.edit, color: Colors.blue),
-                          onPressed: () {},
+                          onPressed: () {
+                            todoItem.docId =
+                                snapshot.data.documents[i].documentID;
+                            updateDialog(
+                                context, snapshot.data.documents[i].documentID);
+                          },
                         ),
                         trailing: IconButton(
                           icon: (done)
