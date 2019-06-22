@@ -78,18 +78,13 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
             ),
-            // Custon button (see buttons.dart)
+            // Custon button (see buttons.dart), here we can now use
+            // a custom event, in this case onPushButton.
             RoundedRaisedButton(
               onPushButton: () {
                 _loginUser();
               },
             )
-            /*RaisedButton(
-                textColor: Colors.white,
-                child: Text('Login'),
-                color: Colors.blue,
-                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                onPressed: _loginUser)*/
           ],
         ),
       ),
