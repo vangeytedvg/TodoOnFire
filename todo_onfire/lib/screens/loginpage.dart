@@ -44,69 +44,71 @@ class _LoginPageState extends State<LoginPage> {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: AnimatedLoginImage(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: TextFormField(
-                initialValue: "i@i.be",
-                decoration: InputDecoration(
-                    labelText: "Email",
-                    hintText: 'Enter your email',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0))),
-                validator: (val) =>
-                    !val.contains('@') ? "Invalid email!" : null,
-                onSaved: (value) {
-                  this.email = value;
-                },
+        child: Center(
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: AnimatedLoginImage(),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: TextFormField(
-                initialValue: "denka123",
-                decoration: InputDecoration(
-                    labelText: "Password",
-                    hintText: 'Enter your password',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0))),
-                validator: (val) =>
-                    val.length < 6 ? "Password is too short!" : null,
-                onSaved: (value) {
-                  this.password = value;
-                },
-                obscureText: true,
-              ),
-            ),
-            // Custon button (see buttons.dart), here we can now use
-            // a custom event, in this case onPushButton.
-            Row(
-              children: <Widget>[
-                RoundedRaisedButton(
-                  label: Text("Login"),
-                  buttonColor: Colors.blue,
-                  fontColor: Colors.white,
-                  onPushButton: () {
-                    _loginUser();
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: TextFormField(
+                  initialValue: "i@i.be",
+                  decoration: InputDecoration(
+                      labelText: "Email",
+                      hintText: 'Enter your email',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0))),
+                  validator: (val) =>
+                      !val.contains('@') ? "Invalid email!" : null,
+                  onSaved: (value) {
+                    this.email = value;
                   },
                 ),
-                RoundedRaisedButton(
-                  label: Text("Sign up"),
-                  buttonColor: Colors.yellow[200],
-                  fontColor: Colors.black,
-                  onPushButton: () {
-                    SignupPage();
+              ),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: TextFormField(
+                  initialValue: "denka123",
+                  decoration: InputDecoration(
+                      labelText: "Password",
+                      hintText: 'Enter your password',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25.0))),
+                  validator: (val) =>
+                      val.length < 6 ? "Password is too short!" : null,
+                  onSaved: (value) {
+                    this.password = value;
                   },
+                  obscureText: true,
+                ),
+              ),
+              // Custon button (see buttons.dart), here we can now use
+              // a custom event, in this case onPushButton.
+              Row(
+                children: <Widget>[
+                  RoundedRaisedButton(
+                    label: Text("Login"),
+                    buttonColor: Colors.blue,
+                    fontColor: Colors.white,
+                    onPushButton: () {
+                      _loginUser();
+                    },
+                  ),
+                  RoundedRaisedButton(
+                    label: Text("Sign up"),
+                    buttonColor: Colors.yellow[200],
+                    fontColor: Colors.black,
+                    onPushButton: () {
+                      Navigator.of(context).pushNamed('/signup');
+                    },
+              ),
+            ],
             ),
-          ],
-          ),
-          ],
-    ),));
+            ],
+    ),
+        ),));
   }
 }

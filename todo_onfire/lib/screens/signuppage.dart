@@ -1,9 +1,19 @@
+/*
+  signuppage.dart
+  Allows new user to sign up for the Todo's on Fire app
+  Author : DVG
+  Modified : June 23, 2019
+*/
+
 import 'package:flutter/material.dart';
- 
-//services
-import '../services/usermanagement.dart';
- 
+import '../services/usermanagement.dart'; 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../services/track.dart';
+import '../services/crud.dart';
+import '../components/imagewidgets.dart';
+import '../components/buttons.dart';
  
 class SignupPage extends StatefulWidget {
   @override
@@ -13,6 +23,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   String _email;
   String _password;
+  
  
   @override
   Widget build(BuildContext context) {
