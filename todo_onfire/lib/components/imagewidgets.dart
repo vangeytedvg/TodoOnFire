@@ -75,8 +75,8 @@ class _AnimatedLoginImageState extends State<AnimatedLoginImage>
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         times += 1;
+        // Let the animation run 3 times
         if (times>2) {
-          animationController.reverse();
           animationController.stop();
         } else { 
           animationController.reverse();

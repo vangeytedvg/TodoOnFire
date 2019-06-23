@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_onfire/screens/signuppage.dart';
 import 'package:todo_onfire/services/track.dart';
 import 'package:provider/provider.dart';
 import '../services/track.dart';
@@ -46,17 +47,21 @@ class _LoginPageState extends State<LoginPage> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(padding: const EdgeInsets.all(18.0),
-            child: AnimatedLoginImage(),),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: AnimatedLoginImage(),
+            ),
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: TextFormField(
+                initialValue: "i@i.be",
                 decoration: InputDecoration(
                     labelText: "Email",
                     hintText: 'Enter your email',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25.0))),
-                validator: (val) => !val.contains('@') ? "Invalid email!" : null,
+                validator: (val) =>
+                    !val.contains('@') ? "Invalid email!" : null,
                 onSaved: (value) {
                   this.email = value;
                 },
@@ -65,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: TextFormField(
+                initialValue: "denka123",
                 decoration: InputDecoration(
                     labelText: "Password",
                     hintText: 'Enter your password',
@@ -80,14 +86,27 @@ class _LoginPageState extends State<LoginPage> {
             ),
             // Custon button (see buttons.dart), here we can now use
             // a custom event, in this case onPushButton.
-            RoundedRaisedButton(
-              onPushButton: () {
-                _loginUser();
-              },
-            )
+            Row(
+              children: <Widget>[
+                RoundedRaisedButton(
+                  label: Text("Login"),
+                  buttonColor: Colors.blue,
+                  fontColor: Colors.white,
+                  onPushButton: () {
+                    _loginUser();
+                  },
+                ),
+                RoundedRaisedButton(
+                  label: Text("Sign up"),
+                  buttonColor: Colors.yellow[200],
+                  fontColor: Colors.black,
+                  onPushButton: () {
+                    SignupPage();
+                  },
+            ),
           ],
-        ),
-      ),
-    );
+          ),
+          ],
+    ),));
   }
 }

@@ -149,11 +149,12 @@ class _DashboardPageState extends State<DashboardPage> {
                             ));
                           },
                         ),
-                        onTap: () {
+                        onTap: () { /*
                           todoItem.docId =
                               snapshot.data.documents[i].documentID;
                           updateDialog(
                               context, snapshot.data.documents[i].documentID);
+                              */
                         },
                         onLongPress: () {
                           // Add code to ask confirmation
@@ -371,6 +372,13 @@ class _DashboardPageState extends State<DashboardPage> {
                   }).catchError((e) {
                     print(e);
                   });
+                },
+              ),FlatButton(
+                child: Text('Cancel'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                 
                 },
               )
             ],
