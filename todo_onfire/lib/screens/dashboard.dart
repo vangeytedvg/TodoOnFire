@@ -25,8 +25,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
+    final scaffoldKey = new GlobalKey<ScaffoldState>();
+    final _formKey = GlobalKey<FormState>();
 
   String carModel;
   String carColor;
@@ -50,7 +50,7 @@ class _DashboardPageState extends State<DashboardPage> {
         key: scaffoldKey,
         appBar: AppBar(
           //backgroundColor: Colors.orange[900],
-          title: Text('Todo' 's On Fire!'),
+          title: Text('Todo''s On Fire!'),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
