@@ -68,7 +68,7 @@ class _SignupPageState extends State<SignupPage> {
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: image,
-                    ),
+                    ), 
 
                     /*** NAME ***/
                     Padding(
@@ -82,7 +82,7 @@ class _SignupPageState extends State<SignupPage> {
                           validator: (val) =>
                               val.isEmpty ? "Lastname cannot be empty" : null,
                           onSaved: (value) {
-                            this.email = value;
+                            this.userProfile.name = value;
                           },
                         )),
 
@@ -106,6 +106,8 @@ class _SignupPageState extends State<SignupPage> {
                       padding: const EdgeInsets.all(4.0),
                       child: const Text("Gender:"),
                     ),
+
+                    /*** Gender */
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Center(
@@ -119,7 +121,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
 
-                    /*** Gender */
+  
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: TextFormField(

@@ -33,7 +33,6 @@ class UserProfile {
       this._name,
       this._firstName,
       this._registeredDateTime);
-    
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -50,12 +49,48 @@ class UserProfile {
     map['name'] = this._name;
     map['firstname'] = this._firstName;
     map['registereddatetime'] = this._registeredDateTime;
+
+    return map;
   }
 
   UserProfile.fromMap(Map<String, dynamic> map) {
     this._docId = map['docId'];
+    this._name = map['name'];
+    this._firstName = map['firstname']; 
     this._email = map['email'];
     this._password = map['password'];
     this._nickName = map['nickname'];
+    this._gender = map['gender'];
+    this._birthDate = map['birthdate'];
+    this._registeredDateTime = map['registereddatetime'];
   }
+
+  /* Getters and Setters */
+  String get docId => this._docId;
+  set docId(String docId) => this._docId = docId;
+
+  String get name => this._name;
+  set name(String name) => this._name = name;
+
+  String get firstName => this._firstName;
+  set firstName(String firstName) => this.firstName = firstName;
+
+  String get email => this._email;
+  set email(String email) => this._email = email;
+
+  String get password => this._password;
+  set password(String password) => this._password = password;
+
+  String get nickName => this._nickName;
+  set nickName(String nickName) => this._nickName = nickName;
+
+  String get gender => this._gender;
+  set gender(String gender) => this._gender = gender;
+
+  String get birthDate => this._birthDate;
+  set birthDate(String birthDate) => this._birthDate = birthDate;
+
+  String get registeredDateTime => this._registeredDateTime;
+  set registeredDateTime(String registeredDateTime) => this._registeredDateTime = registeredDateTime;
+
 }
