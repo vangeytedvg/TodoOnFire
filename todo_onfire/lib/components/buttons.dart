@@ -25,16 +25,18 @@ class RoundedRaisedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      textColor: fontColor,
-      child: label,
-      color: buttonColor,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
-      onPressed: () {
-        // Invoke the VoidCallBack
-        onPushButton();
-      },
+    return Container(
+      child: RaisedButton(
+        textColor: fontColor,
+        child: label,
+        color: buttonColor,
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
+        onPressed: () {
+          // Invoke the VoidCallBack
+          onPushButton();
+        },
+      ),
     );
   }
 }

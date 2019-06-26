@@ -19,6 +19,7 @@ environment:
 dependencies:
   firebase_auth: ^0.11.1+7
   cloud_firestore: ^0.12.5+2
+  grouped_buttons: ^1.0.4
   provider: ^3.0.0+1
   flutter:
     sdk: flutter
@@ -46,6 +47,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/logintoweb.png
+    - images/connection.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,41 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_onfire/models/user_profile.dart';
 import 'package:todo_onfire/services/track.dart';
 import 'package:provider/provider.dart';
 import '../services/track.dart';
 import '../services/crud.dart';
 import '../components/imagewidgets.dart';
 import '../components/buttons.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage>
-    with SingleTickerProviderStateMixin {
-  AnimationController controller;
-
+class _SignupPageState extends State<SignupPage> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
   String activeUser;
+  UserProfile userProfile = UserProfile("", "", "", "", "", "", "", "");
   CrudMethods crudObj = new CrudMethods();
-
-  @override
-  void initState() {
-    super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    controller.dispose();
-    super.dispose();
-  }
 
   void _loginUser() {
     final form = _formKey.currentState;
@@ -58,13 +44,16 @@ class _SignupPageState extends State<SignupPage>
 
   @override
   Widget build(BuildContext context) {
+    AssetImage assetImage = AssetImage('images/connection.png');
+    Image image = Image(
+      image: assetImage,
+      height: 150.0,
+      width: 150.0,
+    );
     return new Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         //backgroundColor: Colors.orange[900],
-        leading: Center(
-            child: AnimatedIcon(
-                icon: AnimatedIcons.list_view, progress: controller)),
         title: Text('Signup'),
         centerTitle: true,
       ),
@@ -78,7 +67,7 @@ class _SignupPageState extends State<SignupPage>
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(18.0),
-                      child: AnimatedLoginImage(),
+                      child: image,
                     ),
 
                     /*** NAME ***/
@@ -107,20 +96,36 @@ class _SignupPageState extends State<SignupPage>
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0))),
                         validator: (val) =>
-                            !val.contains('@') ? "Invalid email!" : null,
+                            val.isEmpty ? "Name cannot be empty" : null,
                         onSaved: (value) {
                           this.email = value;
                         },
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: const Text("Gender:"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Center(
+                        child: RadioButtonGroup(
+                          orientation: GroupedButtonsOrientation.VERTICAL,
+                          labels: <String>["Male", "Female"],
+                          onChange: (String label, int index) =>
+                              print("Label: $label, index: $index"),
+                          onSelected: (String label) => print(label),
+                        ),
+                      ),
+                    ),
+
                     /*** Gender */
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: TextFormField(
-                        initialValue: "i@i.be",
                         decoration: InputDecoration(
                             labelText: "Email",
-                            hintText: 'Enter your email',
+                            hintText: 'someone@somewhere.com',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0))),
                         validator: (val) =>
@@ -130,7 +135,6 @@ class _SignupPageState extends State<SignupPage>
                         },
                       ),
                     ),
-                    
 
                     /*** Nickname */
                     Padding(
@@ -149,7 +153,7 @@ class _SignupPageState extends State<SignupPage>
                         },
                       ),
                     ),
-                    
+
                     /*** Email */
                     Padding(
                       padding: const EdgeInsets.all(18.0),
@@ -167,7 +171,7 @@ class _SignupPageState extends State<SignupPage>
                         },
                       ),
                     ),
-                    
+
                     /*** Password */
                     Padding(
                       padding: const EdgeInsets.all(18.0),
@@ -189,21 +193,24 @@ class _SignupPageState extends State<SignupPage>
                     // Custon button (see buttons.dart), here we can now use
                     // a custom event, in this case onPushButton.
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        RoundedRaisedButton(
-                          label: Text("Login"),
-                          buttonColor: Colors.blue,
-                          fontColor: Colors.white,
-                          onPushButton: () {
-                            _loginUser();
-                          },
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RoundedRaisedButton(
+                            label: Text("Login"),
+                            buttonColor: Colors.blue,
+                            fontColor: Colors.white,
+                            onPushButton: () {
+                              _loginUser();
+                            },
+                          ),
                         ),
                         RoundedRaisedButton(
                           label: Text("Sign up"),
                           buttonColor: Colors.yellow[200],
                           fontColor: Colors.black,
                           onPushButton: () {
-                            controller.forward();
                             Navigator.of(context).pushNamed('/signup');
                           },
                         ),

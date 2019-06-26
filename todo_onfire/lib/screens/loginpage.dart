@@ -89,28 +89,36 @@ class _LoginPageState extends State<LoginPage> {
                 // Custon button (see buttons.dart), here we can now use
                 // a custom event, in this case onPushButton.
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RoundedRaisedButton(
-                      label: Text("Login"),
-                      buttonColor: Colors.blue,
-                      fontColor: Colors.white,
-                      onPushButton: () {
-                        _loginUser();
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: RoundedRaisedButton(
+                        label: Text("Login"),
+                        buttonColor: Colors.blue,
+                        fontColor: Colors.white,
+                        onPushButton: () {
+                          _loginUser();
+                        },
+                      ),
                     ),
-                    RoundedRaisedButton(
-                      label: Text("Sign up"),
-                      buttonColor: Colors.yellow[200],
-                      fontColor: Colors.black,
-                      onPushButton: () {
-                        Navigator.of(context).pushNamed('/signup');
-                      },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RoundedRaisedButton(
+                    label: Text("Sign up"),
+                    buttonColor: Colors.yellow[200],
+                    fontColor: Colors.black,
+                    onPushButton: () {
+                      Navigator.of(context).pushNamed('/signup');
+                    },
+                  ),
                 ),
               ],
-              ),
-              ],
+                ),
+            ],
+          ),
+        ),
       ),
-          ),)),
-    );
+      ),);
   }
 }

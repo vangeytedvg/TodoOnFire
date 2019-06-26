@@ -33,6 +33,7 @@ class UserProfile {
       this._name,
       this._firstName,
       this._registeredDateTime);
+    
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
