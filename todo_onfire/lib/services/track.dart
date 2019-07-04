@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 class UserTracker with ChangeNotifier {
   String _uid;
   String _email;
+  String _userNickName;
   bool _isLoggedIn = false;
 
   // Ctors (one without id, and another with an id)
@@ -25,6 +26,8 @@ class UserTracker with ChangeNotifier {
 
   getEmail() => _email;
   setEmail(String email) => _email = email;
+
+  getUserNickName() => _userNickName;
 
   // Check if the current user is logged into Firebase
   bool isUserLoggedIn() {

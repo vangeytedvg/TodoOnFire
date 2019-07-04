@@ -1,3 +1,10 @@
+/*
+  signuppage.dart
+  Author DVG
+  June 28, 2019
+  Status : stable
+*/
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_onfire/models/user_profile.dart';
@@ -26,6 +33,10 @@ class _SignupPageState extends State<SignupPage> {
   UserProfile userProfile = UserProfile("", "", "", "", "", "", "", "");
   CrudMethods crudObj = new CrudMethods();
 
+  /*
+    Create the user in the firebase authorization store and
+    also in the app specific users table.
+  */
   void _createUser() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -34,6 +45,11 @@ class _SignupPageState extends State<SignupPage> {
           .createUserWithEmailAndPassword(
               email: this.userProfile.email, password: this.password)
           .then((signedInUser) {
+            print(signedInUser.getIdToken());
+            print(signedInUser.uid);
+            UserManagement um = new UserManagement();
+            this.userProfile.docId = signedInUser.uid;
+            um.storeNewUser(this.userProfile, context);
         Navigator.of(context).pushReplacementNamed('/homepage');
       }).catchError((e) {
         Scaffold.of(context).showSnackBar(
@@ -133,6 +149,7 @@ class _SignupPageState extends State<SignupPage> {
                         validator: (val) =>
                             !val.contains('@') ? "Invalid email!" : null,
                         onSaved: (value) {
+                          this.userProfile.email = value;
                           this.email = value;
                         },
                       ),
@@ -150,6 +167,7 @@ class _SignupPageState extends State<SignupPage> {
                         validator: (val) =>
                             val.length < 6 ? "Password is too short!" : null,
                         onSaved: (value) {
+                          this.userProfile.password = value;
                           this.password = value;
                         },
                         obscureText: true,
@@ -168,7 +186,7 @@ class _SignupPageState extends State<SignupPage> {
                         validator: (val) =>
                             val.isEmpty ? "Nickname needed" : null,
                         onSaved: (value) {
-                          this.email = value;
+                          this.userProfile.nickName = value;
                         },
                       ),
                     ),
@@ -185,7 +203,11 @@ class _SignupPageState extends State<SignupPage> {
                                 borderRadius: BorderRadius.circular(25.0)),
                             labelText: 'Birthdate',
                             hasFloatingPlaceholder: true),
-                        onChanged: (dt) => setState(() => date = dt),
+                        onChanged: (dt) {
+                          setState(() {
+                           userProfile.birthDate = dt.toString(); 
+                          });
+                        } ,
                       ),
                     ),
 
@@ -207,9 +229,6 @@ class _SignupPageState extends State<SignupPage> {
                                 // users table.  This is not the actual authorisation
                                 // table, but is used by the app for other things.
                                 form.save();
-                                UserManagement um = new UserManagement();
-                                um.storeNewUser(this.userProfile, context);
-                                // Now create the authorisation object
                                 _createUser();
                                 Navigator.of(context).pushNamed('/landingpage');
                               }

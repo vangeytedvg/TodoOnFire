@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_onfire/screens/signuppage.dart';
 import 'package:todo_onfire/services/track.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_onfire/services/usermanagement.dart';
 import '../services/track.dart';
 import '../services/crud.dart';
 import '../components/imagewidgets.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   String activeUser;
   final _formKey = GlobalKey<FormState>();
   CrudMethods crudObj = new CrudMethods();
+  UserManagement um;
 
   void _loginUser() {
     final form = _formKey.currentState;
@@ -28,9 +30,12 @@ class _LoginPageState extends State<LoginPage> {
           .signInWithEmailAndPassword(
               email: this.email, password: this.password)
           .then((signedInUser) {
-        Provider.of<UserTracker>(context).logInUser();
-        Provider.of<UserTracker>(context).setUid(signedInUser.uid);
-        Navigator.of(context).pushReplacementNamed('/homepage');
+            // Signal that the user is logged in
+            Provider.of<UserTracker>(context).logInUser();
+            Provider.of<UserTracker>(context).setUid(signedInUser.uid);
+            // Now get the details of this user
+
+            Navigator.of(context).pushReplacementNamed('/homepage');
       }).catchError((e) {
         Scaffold.of(context).showSnackBar(
           new SnackBar(content: Text(e.toString())),
@@ -53,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(18.0),
                   child: AnimatedLoginImage(),
                 ),
+                /* Email */
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: TextFormField(
@@ -69,6 +75,8 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ),
+
+                /* Password */
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: TextFormField(
@@ -86,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
                 ),
+                /* controls */
                 // Custon button (see buttons.dart), here we can now use
                 // a custom event, in this case onPushButton.
                 Row(
@@ -102,23 +111,24 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                     ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RoundedRaisedButton(
-                    label: Text("Sign up"),
-                    buttonColor: Colors.yellow[200],
-                    fontColor: Colors.black,
-                    onPushButton: () {
-                      Navigator.of(context).pushNamed('/signup');
-                    },
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RoundedRaisedButton(
+                        label: Text("Sign up"),
+                        buttonColor: Colors.yellow[200],
+                        fontColor: Colors.black,
+                        onPushButton: () {
+                          Navigator.of(context).pushNamed('/signup');
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
-                ),
-            ],
+            ),
           ),
         ),
       ),
-      ),);
+    );
   }
 }

@@ -25,9 +25,9 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-    final scaffoldKey = new GlobalKey<ScaffoldState>();
-    final _formKey = GlobalKey<FormState>();
-
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
+  
   String carModel;
   String carColor;
   TodoItem todoItem;
@@ -46,6 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<UserTracker>(context).isUserLoggedIn());
     return new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -90,8 +91,11 @@ class _DashboardPageState extends State<DashboardPage> {
               return new Center(child: new CircularProgressIndicator());
             default:
               return ListView.builder(
+                // Determines the number of tiles there need to be
+                // drawn in the listview.
                 itemCount: snapshot.data.documents.length,
                 padding: EdgeInsets.all(5.0),
+                // i is the varialble of the loop (uses itemCount in fact)
                 itemBuilder: (context, i) {
                   todoItem = new TodoItem.withId(
                       snapshot.data.documents[i].documentID,

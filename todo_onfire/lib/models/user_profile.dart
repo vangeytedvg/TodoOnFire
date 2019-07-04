@@ -73,7 +73,7 @@ class UserProfile {
   set name(String name) => this._name = name;
 
   String get firstName => this._firstName;
-  set firstName(String firstName) => this.firstName = firstName;
+  set firstName(String firstName) => this._firstName = firstName;
 
   String get email => this._email;
   set email(String email) => this._email = email;
