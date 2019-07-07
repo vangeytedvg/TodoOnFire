@@ -12,6 +12,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todo_onfire/models/user_profile.dart';
+import 'package:todo_onfire/services/usermanagement.dart';
 import '../services/crud.dart';
 import '../models/todo.dart';
 import '../services/track.dart';
@@ -36,24 +38,36 @@ class _DashboardPageState extends State<DashboardPage> {
   String todoDetail;
   TodoItem todoItem;
   bool done = false;
-
+  UserProfile um;
   /* For firebase */
   QuerySnapshot cars;
+  QuerySnapshot docs;
   CrudMethods crudObj = new CrudMethods();
 
   @override
   void initState() {
-    crudObj.getData().then((results) {
-      setState(() {
-        cars = results;
-      });
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     print(Provider.of<UserTracker>(context).getUid());
+    crudObj
+        .getProfileData(Provider.of<UserTracker>(context).getUid())
+        .then((QuerySnapshot docs) {
+      if (docs.documents.isNotEmpty) {
+        um = new UserProfile(
+            docs.documents[0].data['email'],
+            docs.documents[0].data['password'],
+            docs.documents[0].data['nickname'],
+            docs.documents[0].data['gender'],
+            docs.documents[0].data['birthdate'],
+            docs.documents[0].data['name'],
+            docs.documents[0].data['firstname'],
+            "","");
+        print(docs.documents[0].data['email']);
+      }
+    });
     return new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -81,20 +95,25 @@ class _DashboardPageState extends State<DashboardPage> {
             )
           ],
         ),
+        /*
+           Define the drawer menu 
+         */
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
               // TODO: Make this show the data of the logged in user
               new UserAccountsDrawerHeader(
-                accountEmail: Text("vangeytedvg@gmail.com"),
-                accountName: Text("Danny Van Geyte"),
+                accountEmail: Text(um.email),
+                accountName: Text("${um.name} ${um.firstName} (${um.nickName})"),
                 currentAccountPicture: CircleAvatar(
                   child: Text("DVG"),
                 ),
               ),
               ListTile(
-                  leading: Icon(FeatherIcons.refreshCw,
-                  color: Colors.amber,),
+                  leading: Icon(
+                    FeatherIcons.refreshCw,
+                    color: Colors.amber,
+                  ),
                   title: Text("Refresh list"),
                   onTap: () {
                     crudObj.getData().then((results) {
@@ -106,8 +125,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   }),
               new Divider(height: 12.0, indent: 12.0, color: Colors.white),
               new ListTile(
-                leading: Icon(FeatherIcons.logOut, 
-                color: Colors.lime),
+                leading: Icon(FeatherIcons.logOut, color: Colors.lime),
                 title: Text("Logoff"),
                 onTap: () {
                   FirebaseAuth.instance.signOut();
@@ -152,7 +170,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       done = snapshot.data.documents[i].data['status'];
                       return Dismissible(
                           direction: DismissDirection.startToEnd,
-                          // Build a key with the docid
+                          // Build a key with the docid, this is needed to distinguish
+                          // each item seperately
                           key: Key(snapshot.data.documents[i].documentID),
                           child: Card(
                             color: Color.fromRGBO(255, 255, 10, 10),
@@ -235,7 +254,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     },
                   );
               }
-              ;
             }));
   }
 

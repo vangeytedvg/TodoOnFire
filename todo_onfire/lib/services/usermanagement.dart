@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
  
 class UserManagement {
-  storeNewUser(UserProfile user, context) {
+  Future<String> storeNewUser(UserProfile user, context) async {
     Firestore.instance.collection('/users').add({
       'uid': user.docId,
       'name': user.name,
@@ -18,8 +18,11 @@ class UserManagement {
     }).then((value) {
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/landingpage');
+      return "OK";
     }).catchError((e) {
-      print(e);
+      return (e);
     });
+    return "UN";
   }
+
 }

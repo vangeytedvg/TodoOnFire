@@ -30,7 +30,7 @@ class _SignupPageState extends State<SignupPage> {
   String email;
   String password;
   String activeUser;
-  UserProfile userProfile = UserProfile("", "", "", "", "", "", "", "");
+  UserProfile userProfile = UserProfile("", "", "", "", "", "", "", "", "");
   CrudMethods crudObj = new CrudMethods();
 
   /*
@@ -49,7 +49,10 @@ class _SignupPageState extends State<SignupPage> {
             print(signedInUser.uid);
             UserManagement um = new UserManagement();
             this.userProfile.docId = signedInUser.uid;
-            um.storeNewUser(this.userProfile, context);
+            um.storeNewUser(this.userProfile, context).then((t) {
+              print("*************************************");
+              print(t);
+            });
         Navigator.of(context).pushReplacementNamed('/homepage');
       }).catchError((e) {
         Scaffold.of(context).showSnackBar(
