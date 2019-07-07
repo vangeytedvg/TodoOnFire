@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'screens/dashboard.dart';
 import 'screens/loginpage.dart';
 import 'screens/signuppage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 // State management
 import 'services/track.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         ],
         child: Consumer<UserTracker>(builder: (context, usertracker, _) {
           return new MaterialApp(
-            title: "Todo On Fire!",
+            title: "Todo''s On Fire!",
             theme: ThemeData(
               fontFamily: 'Fira',
               brightness: Brightness.dark,
@@ -56,9 +57,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    // Implementeren achteraf, voor de taal
+    Locale loc = Localizations.localeOf(context);
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Todo' 's on Fire!'),
+        title: new Text('Todo''s on Fire!'),
         centerTitle: true,
       ),
       body: new Center(

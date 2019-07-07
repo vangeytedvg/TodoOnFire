@@ -9,15 +9,12 @@
 
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/crud.dart';
 import '../models/todo.dart';
 import '../services/track.dart';
 import 'package:provider/provider.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 
 enum ConfirmAction { DELETE, CANCEL }
 enum TodoState { DONE, NOTDONE }
@@ -36,11 +33,13 @@ class _DashboardPageState extends State<DashboardPage> {
   String todoDetail;
   TodoItem todoItem;
   bool done = false;
-
+  /* For undelete */
+  String oldTodoTitle;
+  String oldTodoDetail;
+  bool oldDone;
   /* For firebase */
   QuerySnapshot cars;
   CrudMethods crudObj = new CrudMethods();
-
   @override
   void initState() {
     crudObj.getData().then((results) {
@@ -53,7 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<UserTracker>(context).getUid());
+    print(Provider.of<UserTracker>(context).isUserLoggedIn());
     return new Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
@@ -70,52 +69,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   });
                 });
               },
-            ),
-            IconButton(
-              icon: Icon(FeatherIcons.logOut),
-              tooltip: "Log off",
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacementNamed('/landingpage');
-              },
             )
           ],
-        ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              // TODO: Make this show the data of the logged in user
-              new UserAccountsDrawerHeader(
-                accountEmail: Text("vangeytedvg@gmail.com"),
-                accountName: Text("Danny Van Geyte"),
-                currentAccountPicture: CircleAvatar(
-                  child: Text("DVG"),
-                ),
-              ),
-              ListTile(
-                  leading: Icon(FeatherIcons.refreshCw,
-                  color: Colors.amber,),
-                  title: Text("Refresh list"),
-                  onTap: () {
-                    crudObj.getData().then((results) {
-                      setState(() {
-                        cars = results;
-                      });
-                    });
-                    Navigator.of(context).pop();
-                  }),
-              new Divider(height: 12.0, indent: 12.0, color: Colors.white),
-              new ListTile(
-                leading: Icon(FeatherIcons.logOut, 
-                color: Colors.lime),
-                title: Text("Logoff"),
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacementNamed('/landingpage');
-                },
-              ),
-            ],
-          ),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.plus_one),
@@ -149,81 +104,90 @@ class _DashboardPageState extends State<DashboardPage> {
                     padding: EdgeInsets.all(5.0),
                     // i is the varialble of the loop (uses itemCount in fact)
                     itemBuilder: (context, i) {
+                      todoItem = new TodoItem.withId(
+                          snapshot.data.documents[i].documentID,
+                          "",
+                          "",
+                          "",
+                          "",
+                          0,
+                          0,
+                          0);
                       done = snapshot.data.documents[i].data['status'];
-                      return Dismissible(
+                      var card = Card(
+                        color: Color.fromRGBO(255, 255, 0, 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        elevation: 4.0,
+                        child: ListTile(
+                          title: Text(
+                            snapshot.data.documents[i].data['todoTitle'],
+                            style:
+                                TextStyle(color: Colors.green, fontSize: 18.0),
+                          ),
+                          subtitle: Text(
+                            snapshot.data.documents[i].data['todoDetail'],
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                          // Put an icon on it
+                          leading: IconButton(
+                            icon: Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () {
+                              todoItem.docId =
+                                  snapshot.data.documents[i].documentID;
+                              updateDialog(context,
+                                  snapshot.data.documents[i].documentID);
+                            },
+                          ),
+                          trailing: IconButton(
+                            icon: (done)
+                                ? Icon(Icons.thumb_up,
+                                    color: Colors.green[600], size: 25.0)
+                                : Icon(Icons.thumb_down,
+                                    color: Colors.black38, size: 25.0),
+                            onPressed: () {
+                              /*
+                                Code added by DVG, in order to make it a todo app
+                                we should keep track of the status of a todo-item.
+                              */
+                              done = !done;
+                              crudObj.updateStatus(
+                                  snapshot.data.documents[i].documentID,
+                                  {'status': done});
+                              Scaffold.of(context).showSnackBar(new SnackBar(
+                                content: Text("Task done is $done"),
+                              ));
+                            },
+                          ),
+                        ),
+                      );
+                      Dismissible(
                           direction: DismissDirection.startToEnd,
                           // Build a key with the docid
                           key: Key(snapshot.data.documents[i].documentID),
-                          child: Card(
-                            color: Color.fromRGBO(255, 255, 10, 10),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            elevation: 4.0,
-                            child: ListTile(
-                              title: Text(
-                                snapshot.data.documents[i].data['todoTitle'],
-                                style: TextStyle(
-                                    color: Colors.green, fontSize: 18.0),
-                              ),
-                              subtitle: Text(
-                                snapshot.data.documents[i].data['todoDetail'],
-                                style: TextStyle(color: Colors.black87),
-                              ),
-                              // Put an icon on it
-                              leading: IconButton(
-                                icon:
-                                    Icon(FeatherIcons.edit, color: Colors.blue),
-                                onPressed: () {
-                                  updateDialog(context,
-                                      snapshot.data.documents[i].documentID);
-                                },
-                              ),
-                              trailing: IconButton(
-                                icon: (done)
-                                    ? Icon(FeatherIcons.thumbsUp,
-                                        color: Colors.green[600], size: 25.0)
-                                    : Icon(FeatherIcons.thumbsDown,
-                                        color: Colors.grey, size: 25.0),
-                                onPressed: () {
-                                  done = !done;
-                                  crudObj.updateStatus(
-                                      snapshot.data.documents[i].documentID,
-                                      {'status': done});
-                                  /*Scaffold.of(context)
-                                      .showSnackBar(new SnackBar(
-                                    content: Text("Task done is $done"),
-                                  ));*/
-                                },
-                              ),
-                            ),
-                          ),
-                          background: Container(
-                            color: Colors.red,
+                          child: new Container(
+                            child: card,
                           ),
                           onDismissed: (direction) {
+                            print(snapshot.data.documents[i].documentID);
                             // Remember item that is about to be deleted
                             setState(() {
-                              String oldTodoTitle =
-                                  snapshot.data.documents[i].data['todoTitle'];
-                              String oldTodoDetail =
-                                  snapshot.data.documents[i].data['todoDetail'];
-                              bool oldDone =
-                                  snapshot.data.documents[i].data['status'];
-                              /* Remove record from Firebase */
+                              this.oldTodoTitle = this.todoTitle;
+                              this.oldTodoDetail = this.todoDetail;
+                              this.oldDone = this.done;
                               _deleteItemNow(context,
                                   snapshot.data.documents[i].documentID);
-                              //* Give a chance to recover the item, this was a litte
-                              //* hard to find out how it works, but it is ok now
-                              scaffoldKey.currentState.showSnackBar(SnackBar(
+                              // * Give a chance to recover the item
+                              // FIXME: App stopped working, check out why
+                              Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text("Deleted $oldTodoTitle"),
                                 action: SnackBarAction(
-                                  label: "Ooops Don't delete!",
+                                  label: "UNDO",
                                   onPressed: () {
                                     this.todoTitle = oldTodoTitle;
                                     this.todoDetail = oldTodoDetail;
                                     this.done = oldDone;
-                                    _undoDeleteRecord(this.todoTitle,
-                                        this.todoDetail, this.done);
+                                    _undoDeleteRecord();
                                     crudObj.getData().then((results) {
                                       cars = results;
                                     });
@@ -239,22 +203,17 @@ class _DashboardPageState extends State<DashboardPage> {
             }));
   }
 
-  /*
-    Undeletes a record.  In fact, it taks the data
-    of the record that was swipped and reinserts that into 
-    firebase. 
-   */
-  Future<void> _undoDeleteRecord(
-      String oldTodoTitle, String oldTodoDetail, bool oldDone) async {
+  /* Experimental, try to undelete a record */
+  Future<void> _undoDeleteRecord() async {
     print('----------------------------------------');
     print(this.todoTitle);
     // Prepare a new Todo Item
     print(this.todoDetail);
-    print("----------------------------------------");
+    print("-------------------------------------------------");
     crudObj.addData({
-      'todoTitle': oldTodoTitle,
-      'todoDetail': oldTodoDetail,
-      'status': oldDone
+      'todoTitle': this.oldTodoTitle,
+      'todoDetail': this.oldTodoDetail,
+      'status': this.oldDone
     }).catchError((e) {
       print(e);
     });
@@ -266,8 +225,6 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<bool> addDialog(BuildContext context) async {
     // Create a new todo item (without Id, we don't have it yet)
     todoItem = new TodoItem("", "", "", "", 0, 0, 0);
-    print("User Identification..");
-    print(Provider.of<UserTracker>(context).getUid());
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -356,13 +313,12 @@ class _DashboardPageState extends State<DashboardPage> {
       crudObj.addData({
         'todoTitle': this.todoTitle,
         'todoDetail': this.todoDetail,
-        'status': this.done,
-        'user_id': Provider.of<UserTracker>(context).getUid()
+        'status': this.done
       }).then((result) {
-        //final snackbar = new SnackBar(
-        //  content: new Text("Record added"),
-        //);
-        //scaffoldKey.currentState.showSnackBar(snackbar);
+        final snackbar = new SnackBar(
+          content: new Text("Record added"),
+        );
+        scaffoldKey.currentState.showSnackBar(snackbar);
       }).catchError((e) {
         return (e);
       });

@@ -23,6 +23,7 @@ class UserProfile {
   */
   UserProfile(this._email, this._password, this._nickName, this._gender,
       this._birthDate, this._name, this._firstName, this._registeredDateTime);
+      
   UserProfile.withId(
       this._docId,
       this._email,

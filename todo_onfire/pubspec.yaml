@@ -22,7 +22,11 @@ dependencies:
   grouped_buttons: ^1.0.4
   datetime_picker_formfield: ^0.2.0
   provider: ^3.0.0+1
+  eva_icons_flutter: ^2.0.0
+  feather_icons_flutter: ^4.7.4
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
