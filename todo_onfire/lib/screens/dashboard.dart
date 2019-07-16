@@ -283,6 +283,7 @@ class _DashboardPageState extends State<DashboardPage> {
     Undeletes a record.  In fact, it taks the data
     of the record that was swipped and reinserts that into 
     firebase. 
+    17/07/2019 bug fix, user id was not passed in
   */
   Future<void> _undoDeleteRecord(
       String oldTodoTitle, String oldTodoDetail, bool oldDone) async {
@@ -294,7 +295,8 @@ class _DashboardPageState extends State<DashboardPage> {
     await crudObj.addData({
       'todoTitle': oldTodoTitle,
       'todoDetail': oldTodoDetail,
-      'status': oldDone
+      'status': oldDone,
+      'user_id': Provider.of<UserTracker>(context).getUid()
     }).catchError((e) {
       print(e);
     });
