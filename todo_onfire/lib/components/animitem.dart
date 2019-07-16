@@ -1,3 +1,7 @@
+/*
+  This widget shows an animated text used in the
+  dashboard. 
+*/
 import 'package:flutter/material.dart';
 
 class AnimEmptyBox extends StatefulWidget {
@@ -39,7 +43,7 @@ class _AnimEmptyBoxState extends State<AnimEmptyBox>
           child: FadeTransition(
         opacity: _animation,
         //child: Transform.rotate(child: Text("It's empty in Here!!"), angle: _animation.value,)),
-        child: Text("It's empty in here!", style: TextStyle(fontSize: 25.0),),
+        child: Text("It's empty in here!", style: TextStyle(fontSize: 20.0),),
       )),
     ));
   }

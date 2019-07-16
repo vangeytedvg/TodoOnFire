@@ -167,7 +167,7 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               // Workaround for the builder null error
               if (snapshot.hasError) return new Text('${snapshot.error}');
-              if (snapshot.data == null) { return Text("Ooeps");}
+              if (snapshot?.data == null) { return Text("");}
               if (snapshot?.data?.documents?.length == 0) {
                 print("Ukkeldepukkel >>>>>>");
                 //return new Center(child: _showEmptyInHere());
@@ -280,10 +280,10 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   /*
-                    Undeletes a record.  In fact, it taks the data
-                    of the record that was swipped and reinserts that into 
-                    firebase. 
-                   */
+    Undeletes a record.  In fact, it taks the data
+    of the record that was swipped and reinserts that into 
+    firebase. 
+  */
   Future<void> _undoDeleteRecord(
       String oldTodoTitle, String oldTodoDetail, bool oldDone) async {
     print('Undo activated');
@@ -301,8 +301,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   /*
-                    Show the add record dialog
-                  */
+    Show the add record dialog
+  */
   Future<bool> addDialog(BuildContext context) async {
     // Create a new todo item (without Id, we don't have it yet)
     print("User Identification..");
@@ -409,8 +409,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   /*
-                    Update the information in the database
-                  */
+    Update the information in the database
+  */
   void _updateRecord() {
     print('---->> _updateRecord called...');
     print(this.todoItem.title);
@@ -436,8 +436,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   /*
-                    Show the update dialog
-                  */
+    Show the update dialog
+  */
   Future<bool> _updateDialog(BuildContext context) async {
     // Create a new todo item (without Id, we don't have it yet)
     print("User Identification is here:");
@@ -552,12 +552,4 @@ class _DashboardPageState extends State<DashboardPage> {
     return null;
   }
 
-  /*
-    Is displayed when the listview's stream has no data
-  */
-  _showEmptyInHere() {
-    return new Center(
-      child: Text("Hey, it's empty in here!!"),
-    );
-  }
 }
