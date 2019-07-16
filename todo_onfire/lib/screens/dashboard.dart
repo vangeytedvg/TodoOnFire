@@ -17,6 +17,7 @@ import 'package:todo_onfire/services/usermanagement.dart';
 import '../services/crud.dart';
 import '../models/todo.dart';
 import '../services/track.dart';
+import '../components/animitem.dart';
 import 'package:provider/provider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
@@ -166,9 +167,11 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               // Workaround for the builder null error
               if (snapshot.hasError) return new Text('${snapshot.error}');
-              if (snapshot.data.documents.length == 0) {
+              if (snapshot.data == null) { return Text("Ooeps");}
+              if (snapshot?.data?.documents?.length == 0) {
                 print("Ukkeldepukkel >>>>>>");
-                return new Center(child: _showEmptyInHere());
+                //return new Center(child: _showEmptyInHere());
+                return new AnimEmptyBox();
               } else {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -549,6 +552,9 @@ class _DashboardPageState extends State<DashboardPage> {
     return null;
   }
 
+  /*
+    Is displayed when the listview's stream has no data
+  */
   _showEmptyInHere() {
     return new Center(
       child: Text("Hey, it's empty in here!!"),
