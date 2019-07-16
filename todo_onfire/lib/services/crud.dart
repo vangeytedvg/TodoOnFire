@@ -24,7 +24,7 @@ class CrudMethods {
   Future<void> addData(carData) async {
     print(carData);
     if (isLoggedIn()) {
-      Firestore.instance.collection('testscrud').add(carData).catchError((e) {
+      await Firestore.instance.collection('testscrud').add(carData).catchError((e) {
         print(e);
       });
     } else {
@@ -33,11 +33,12 @@ class CrudMethods {
   }
 
   // Retrieve records from the Firebase store
-  getData() async {
+  getData(String uId) async {
     // In the next sample, the name testcrud is the name of the 'table' in firebase.
     // But in firebase it is called a document....
     return await Firestore.instance
         .collection('testscrud')
+        .where('user_id', isEqualTo: uId)
         .getDocuments()
         .catchError((e) {});
   }
@@ -61,9 +62,7 @@ class CrudMethods {
   }
 
   // Update the data
-  updateData(selectedDoc, newValues, thetodo) async {
-    // I suppose we don't need to be async here, we are not waiting
-    // for updates here, so...
+  updateData(selectedDoc, newValues) async {
     return await Firestore.instance
         .collection('testscrud')
         .document(selectedDoc)

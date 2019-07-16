@@ -4,14 +4,15 @@
   June 18, 2019
 */
 class TodoItem {
+  
   String _docId;
   String _title;
   String _details;
   String _createdDate;
   String _closedDate;
-  int _ownerId;
-  int _creatorId;
-  int _priorityLevel;
+  String _ownerId;
+  String _creatorId;
+  String _priorityLevel;
 
   // Constructors
   TodoItem(this._title, this._details, this._createdDate, this._closedDate,
@@ -80,18 +81,18 @@ class TodoItem {
     _closedDate = closedDate;
   }
 
-  int get ownerId => _ownerId;
-  set ownerId(int ownerId) {
+  String get ownerId => _ownerId;
+  set ownerId(String ownerId) {
     _ownerId = ownerId;
   }
 
-  int get creatorId => _creatorId;
-  set creatorId(int creatorId) {
+  String get creatorId => _creatorId;
+  set creatorId(String creatorId) {
     _creatorId = creatorId;
   }
 
-  int get priorityLevel => _priorityLevel;
-  set priorityLevel(int priorityLevel) {
+  String get priorityLevel => _priorityLevel;
+  set priorityLevel(String priorityLevel) {
     _priorityLevel = priorityLevel;
   }
 }

@@ -30,11 +30,11 @@ class _LoginPageState extends State<LoginPage> {
           .signInWithEmailAndPassword(
               email: this.email, password: this.password)
           .then((signedInUser) {
-            // Signal that the user is logged in
-            Provider.of<UserTracker>(context).logInUser();
-            Provider.of<UserTracker>(context).setUid(signedInUser.uid);
-            // Now get the details of this user
-            Navigator.of(context).pushReplacementNamed('/homepage');
+        // Signal that the user is logged in
+        Provider.of<UserTracker>(context).logInUser();
+        Provider.of<UserTracker>(context).setUid(signedInUser.uid);
+        // Now get the details of this user
+        Navigator.of(context).pushReplacementNamed('/homepage');
       }).catchError((e) {
         Scaffold.of(context).showSnackBar(
           new SnackBar(content: Text(e.toString())),
@@ -67,9 +67,9 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Enter your email',
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0))),
-                    validator: (val) =>         
+                    validator: (val) =>
                         !val.contains('@') ? "Invalid email!" : null,
-                    onSaved: (value) {  
+                    onSaved: (value) {
                       this.email = value;
                     },
                   ),
