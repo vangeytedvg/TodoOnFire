@@ -26,7 +26,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   firebase_auth: ^0.11.1+7
   cloud_firestore: ^0.12.5+2
-  grouped_buttons: ^1.0.4
+  firebase_ml_vision: ^0.9.0+3
+  grouped_buttons: ^1.0.4 
   datetime_picker_formfield: ^0.2.0
   provider: ^3.0.0+1
   eva_icons_flutter: ^2.0.0

@@ -5,6 +5,9 @@
   DVG June 17, 2019
   Made a lot of modifications, so the app starts to look and behave like
   a todo list (but then one on steroids).
+  Changelog:
+    - 16/07/2019 Bugfixes around update todo
+    - 17/07/2019 Added the Achievement toast widget
 */
 
 import 'dart:async';
@@ -20,8 +23,7 @@ import '../components/animitem.dart';
 import 'package:provider/provider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
-//import 'package:achievement_view/achievement_view.dart';
-
+import 'package:achievement_view/achievement_view.dart';
 
 enum ConfirmAction { DELETE, CANCEL }
 enum TodoState { DONE, NOTDONE }
@@ -166,7 +168,9 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               // Workaround for the builder null error
               if (snapshot.hasError) return new Text('${snapshot.error}');
-              if (snapshot?.data == null) { return Text("");}
+              if (snapshot?.data == null) {
+                return Text("");
+              }
               if (snapshot?.data?.documents?.length == 0) {
                 //return new Center(child: _showEmptyInHere());
                 return new AnimEmptyBox();
@@ -425,11 +429,16 @@ class _DashboardPageState extends State<DashboardPage> {
         'todoDetail': this.todoItem.details,
         'user_id': Provider.of<UserTracker>(context).getUid()
       }).then((result) {
-        
-        final snackbar = new SnackBar(
-          content: new Text("Record updated"),
-        );
-        scaffoldKey.currentState.showSnackBar(snackbar);
+        return AchievementView(context,
+        icon: Icon(FeatherIcons.save),
+            duration: Duration(seconds: 2),
+            color: Colors.blue[200],
+            alignment: Alignment.center,
+            title: "Success!",
+            subTitle: "Redord updated!",
+            isCircle: false,
+            listener: (status) {})
+          ..show();
       }).catchError((e) {
         return (e);
       });
@@ -552,5 +561,4 @@ class _DashboardPageState extends State<DashboardPage> {
     await crudObj.deleteData(selectedDocID);
     return null;
   }
-
 }
