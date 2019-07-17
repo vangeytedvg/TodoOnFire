@@ -13,7 +13,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_onfire/models/user_profile.dart';
-import 'package:todo_onfire/services/usermanagement.dart';
 import '../services/crud.dart';
 import '../models/todo.dart';
 import '../services/track.dart';
@@ -21,6 +20,8 @@ import '../components/animitem.dart';
 import 'package:provider/provider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+//import 'package:achievement_view/achievement_view.dart';
+
 
 enum ConfirmAction { DELETE, CANCEL }
 enum TodoState { DONE, NOTDONE }
@@ -153,8 +154,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   // The actual todo-list is drawn here
   Widget _todoList() {
-    print(">>>>---");
-    print("User ID = ${Provider.of<UserTracker>(context).getUid()}");
     // The cars snapshot is reetrieved in the Widget Build method above
     return new Container(
         child: StreamBuilder(
@@ -169,7 +168,6 @@ class _DashboardPageState extends State<DashboardPage> {
               if (snapshot.hasError) return new Text('${snapshot.error}');
               if (snapshot?.data == null) { return Text("");}
               if (snapshot?.data?.documents?.length == 0) {
-                print("Ukkeldepukkel >>>>>>");
                 //return new Center(child: _showEmptyInHere());
                 return new AnimEmptyBox();
               } else {
@@ -427,6 +425,7 @@ class _DashboardPageState extends State<DashboardPage> {
         'todoDetail': this.todoItem.details,
         'user_id': Provider.of<UserTracker>(context).getUid()
       }).then((result) {
+        
         final snackbar = new SnackBar(
           content: new Text("Record updated"),
         );
