@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo_onfire/screens/signuppage.dart';
-import 'package:todo_onfire/services/track.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_onfire/services/track.dart';
 import 'package:todo_onfire/services/usermanagement.dart';
-import '../services/track.dart';
-import '../services/crud.dart';
-import '../components/imagewidgets.dart';
+
 import '../components/buttons.dart';
+import '../components/imagewidgets.dart';
+import '../services/crud.dart';
+import '../services/track.dart';
 
 class LoginPage extends StatefulWidget {
   @override

@@ -12,18 +12,19 @@
 
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:achievement_view/achievement_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_onfire/models/user_profile.dart';
-import '../services/crud.dart';
-import '../models/todo.dart';
-import '../services/track.dart';
-import '../components/animitem.dart';
-import 'package:provider/provider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
-import 'package:achievement_view/achievement_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_onfire/models/user_profile.dart';
+
+import '../components/animitem.dart';
+import '../models/todo.dart';
+import '../services/crud.dart';
+import '../services/track.dart';
 
 enum ConfirmAction { DELETE, CANCEL }
 enum TodoState { DONE, NOTDONE }
@@ -173,7 +174,11 @@ class _DashboardPageState extends State<DashboardPage> {
               }
               if (snapshot?.data?.documents?.length == 0) {
                 //return new Center(child: _showEmptyInHere());
-                return new AnimEmptyBox();
+                return new AnimEmptyBox(
+                    color: Colors.blue,
+                    label: "It's cold here!",
+                    fontSize: 23.0,
+                    duration: Duration(seconds: 2));
               } else {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -430,7 +435,7 @@ class _DashboardPageState extends State<DashboardPage> {
         'user_id': Provider.of<UserTracker>(context).getUid()
       }).then((result) {
         return AchievementView(context,
-        icon: Icon(FeatherIcons.save),
+            icon: Icon(FeatherIcons.save),
             duration: Duration(seconds: 2),
             color: Colors.blue[200],
             alignment: Alignment.center,
@@ -522,7 +527,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         Expanded(
                             child: FlatButton(
                           child: Text("Cancel"),
-                          /* When cancel is clicked, yust navigate away */
+                          /* When cancel is clicked, just navigate away */
                           onPressed: () => Navigator.of(context).pop(),
                         )),
                       ],
